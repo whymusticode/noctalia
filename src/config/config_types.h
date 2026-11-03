@@ -309,7 +309,7 @@ struct ShellSessionConfig {
   bool operator==(const ShellSessionConfig&) const = default;
 };
 
-// Lock screen on-screen keyboard: Auto shows it on touch and hides it on a physical key press.
+// Lock screen on-screen keyboard: Auto shows it when the lock screen is touched.
 enum class OnScreenKeyboardMode : std::uint8_t {
   Auto = 0,
   Always = 1,

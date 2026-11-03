@@ -1,5 +1,6 @@
 #include "shell/lockscreen/lockscreen_keyboard.h"
 
+#include "render/scene/input_area.h"
 #include "render/scene/node.h"
 #include "ui/builders.h"
 #include "ui/controls/button.h"
@@ -99,8 +100,12 @@ std::unique_ptr<Flex> LockscreenKeyboard::build(KeyCallback onKey, std::function
               .onClick = [this, r, i] { handlePress(r, i); },
               .configure =
                   [](Button& b) {
-                    // Keys must not take keyboard focus from the password field or join Tab order.
+                    // Keys must never take focus: a press would blur the password field (dropping its
+                    // text-input state), so the next physical key after hiding the keyboard is lost.
                     b.setTabStop(false);
+                    if (InputArea* area = b.inputArea(); area != nullptr) {
+                      area->setFocusable(false);
+                    }
                   },
           })
       );

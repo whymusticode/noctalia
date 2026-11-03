@@ -2594,7 +2594,7 @@
           "label": "Grace Period"
         },
         "keyboard": {
-          "description": "Show an on-screen keyboard on the lock screen. Auto opens it when you touch the screen and hides it when a physical key is pressed",
+          "description": "Show an on-screen keyboard on the lock screen. Auto opens it when you touch the screen",
           "label": "On-Screen Keyboard"
         },
         "lock-before-suspend": {

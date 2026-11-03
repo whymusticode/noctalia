@@ -615,7 +615,14 @@ LockSurface::LockSurface(WaylandConnection& connection, ConfigService* config) :
           .variant = ButtonVariant::Ghost,
           .visible = false,
           .onClick = [this] { setOskVisible(!m_oskVisible); },
-          .configure = [](Button& button) { button.setZIndex(2); },
+          .configure =
+              [](Button& button) {
+                button.setZIndex(2);
+                // Toggling the keyboard must not pull focus off the password field.
+                if (InputArea* area = button.inputArea(); area != nullptr) {
+                  area->setFocusable(false);
+                }
+              },
       })
   );
 
@@ -1208,10 +1215,6 @@ void LockSurface::onKeyboardEvent(const KeyboardEvent& event) {
     }
   }
 
-  // A physical key press means a hardware keyboard is in use: get the on-screen one out of the way.
-  if (m_oskVisible && event.pressed && !event.repeat && oskMode() == OnScreenKeyboardMode::Auto) {
-    setOskVisible(false);
-  }
   dispatchKeyboardEvent(event);
 }
 
